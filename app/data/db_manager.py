@@ -10,17 +10,15 @@ class db_manager_cl:
         cursor = con.cursor() 
         time = datetime.now()
         data_to_db = []
-        data = {"ticker":"BTCUSDT", "price": 70000, "date": time}
+        data = {"ticker":"BTCUSDT", "price": 69000, "date": time}
         for value in data.values():
             data_to_db.append(value)
         cursor.execute('''INSERT INTO crypto_info (ticker, price, date) VALUES (?,?,?)''', data_to_db)
-        results = cursor.fetchall()
         con.commit()
         con.close()
-        return results
 
 
-    #создаём метод pull_from_db(возвращает строку)
+    #создаём метод pull_from_db(возвращает информацию из таблицы)
     def pull_from_db(self):
         con = sqlite3.connect('app/data/data.db')
         cursor = con.cursor() 
