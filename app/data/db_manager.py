@@ -1,25 +1,28 @@
 import sqlite3
-from datetime import datetime, date, time
 
 
-#создаём класс db_manager_cl
-class db_manager_cl: 
-    #создаём метод add_to_db(возвращает строку)
-    def add_to_db(self):       
+class db_manager_cl():
+    def __create_db(self):                                                                             #private method to create table and DB        
         con = sqlite3.connect('app/data/data.db')
         cursor = con.cursor() 
-        time = datetime.now()
+        sql_query = '''                                                                                         
+            CREATE TABLE crypto_info(id INTEGER PRIMARY KEY, ticker TEXT, price INTEGER,  date TEXT);
+            '''
+        cursor.execute(sql_query)
+        con.commit()
+        con.close() 
+    
+    def __add_to_db(self, data):                                                                       #private method to add main.data to DB 
+        con = sqlite3.connect('app/data/data.db')
+        cursor = con.cursor()                   
         data_to_db = []
-        data = {"ticker":"BTCUSDT", "price": 69000, "date": time}
         for value in data.values():
             data_to_db.append(value)
         cursor.execute('''INSERT INTO crypto_info (ticker, price, date) VALUES (?,?,?)''', data_to_db)
         con.commit()
         con.close()
-
-
-    #создаём метод pull_from_db(возвращает информацию из таблицы)
-    def pull_from_db(self):
+    
+    def __pull_from_db(self):                                                                          #private method to get info returns *
         con = sqlite3.connect('app/data/data.db')
         cursor = con.cursor() 
         sql_query ='''
@@ -30,4 +33,11 @@ class db_manager_cl:
         con.commit()
         con.close()
         return results
+
+    def get_data(self):                                                                                #public method to use __add_to_db
+        result = self.__pull_from_db()
+        return result
+    def push_data(self, data):                                                                         #public method to use __pull_from_db
+        self.__add_to_db(data)
+    
 
