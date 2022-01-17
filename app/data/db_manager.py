@@ -1,7 +1,7 @@
 import sqlite3
 
 
-class db_manager_cl():
+class DB_manager_cl():
     def __create_db(self):                                                                             #private method to create table and DB        
         con = sqlite3.connect('app/data/data.db')
         cursor = con.cursor() 
