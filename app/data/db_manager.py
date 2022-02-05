@@ -1,8 +1,9 @@
 import sqlite3
-from data.parsers import *
+from data.parsers import Parsers
+from data.abstract_storage_manager import abstract_storage_Manager
 # Айди, тикер, таймфрейм, цена открытия, цена закрытия, максимум, минимум, дата
 
-class DB_manager_cl():
+class DB_manager_cl(abstract_storage_Manager):
     def __create_db(self):                                                                             #private method to create table and DB        
         con = sqlite3.connect('app/data/data.db')
         cursor = con.cursor() 
@@ -13,9 +14,9 @@ class DB_manager_cl():
         con.commit()
         con.close() 
     
-    def __add_to_db(self):
+    def __write(self):
         parsers = Parsers()
-        data = parsers.data                                                                      #private method to add main.data to DB 
+        data = parsers.save_historical_data()                                                                   #private method to add main.data to DB 
         con = sqlite3.connect('app/data/data.db')
         cursor = con.cursor()                   
         data_to_db = []
@@ -25,7 +26,7 @@ class DB_manager_cl():
         con.commit()
         con.close()
     
-    def __pull_from_db(self):                                                                          #private method to get info returns *
+    def __read(self):                                                                          #private method to get info returns *
         con = sqlite3.connect('app/data/data.db')
         cursor = con.cursor() 
         sql_query ='''
@@ -38,9 +39,9 @@ class DB_manager_cl():
         return results
 
     def get_data(self):                                                                                #public method to use __add_to_db
-        result = self.__pull_from_db()
+        result = self.__read()
         return result
-    def push_data(self):                                                                         #public method to use __pull_from_db
-        self.__add_to_db()
+    def push_data(self):                                                                                #public method to use __pull_from_db
+        self.__write()
     
 
