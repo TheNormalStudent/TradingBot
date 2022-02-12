@@ -1,22 +1,26 @@
-import csv
-from data.config import *
 from data.db_manager import *
-import csv
 from binance import Client
-from datetime import datetime, date, time
+from data.csv_manager import csv_Manager
+from datetime import datetime
 
 
 
-class Parsers:
+class Binance_manager:
 
     def __init__(self, API, SECRET_KEY):
-        __manager = DB_manager_cl()
-        __client = Client(API, SECRET_KEY)
+        self.__manager = DB_manager_cl()
+        self.__csv_manager = csv_Manager()
+        self.__client = Client(API, SECRET_KEY)
     
     def save_historical_data(self):
+        #TODO impllement dict iteration and writing to db
         ticker ="BTCUSDT"
+
         candles = self.__client.get_klines(symbol=ticker, interval=Client.KLINE_INTERVAL_1MINUTE)
-        self.create_dict(candles[499], ticker)
+
+        norm_candle = self.create_dict(candles[499], ticker)
+        self.__manager.push_data(norm_candle)
+        #self.__csv_manager.push_data(norm_candle)
     
 
     def create_dict(self, last_candle, ticker):

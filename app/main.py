@@ -1,11 +1,12 @@
-'''Валюты, которыми я обычно торгую BTC, BNB, ETH, LINK, DOT'''
+from bot import Bot
+
+# from data.db_manager import DB_manager_cl                  #class import
+
+# db_manager = DB_manager_cl()                               #create db_manager_cl object
+bot = Bot()
+bot.start_some_stuff()
+bot.get_some_stuff()
 
 
-from data.db_manager import *              #class import
-from datetime import datetime, date, time
-import time
-
-db_manager = DB_manager_cl()                               #create db_manager_cl object
-
-db_manager.push_data()                                 #add data to DB                             
-print(db_manager.get_data())                               #get data from DB
+# db_manager.push_data()                                     #add data to DB                             
+# print(db_manager.get_data())                               #get data from DB
