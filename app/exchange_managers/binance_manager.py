@@ -13,14 +13,14 @@ class Binance_manager:
         self.__client = Client(API, SECRET_KEY)
     
     def save_historical_data(self):
-        #TODO impllement dict iteration and writing to db
+        #TODO impllement dict iteration
         ticker ="BTCUSDT"
 
         candles = self.__client.get_klines(symbol=ticker, interval=Client.KLINE_INTERVAL_1MINUTE)
 
-        norm_candle = self.create_dict(candles[499], ticker)
-        self.__manager.push_data(norm_candle)
-        #self.__csv_manager.push_data(norm_candle)
+        candle = self.create_dict(candles[499], ticker)
+        self.__manager.push_data(candle)
+        self.__csv_manager.push_data(candle)
     
 
     def create_dict(self, last_candle, ticker):
@@ -33,5 +33,8 @@ class Binance_manager:
 
         interval = "1MIN"
         data = {"ticker":ticker, 'timeframe':interval, 'open_price':last_candle[1] , 'close_price':last_candle[4] , "max":last_candle[2] , "min":last_candle[3] , "open_date": open_time_human, "close_date": close_time_human} #data for DB to use
-        return data
+        candle_data = []
+        for value in data.values():
+            candle_data.append(value)
+        return candle_data
         

@@ -13,14 +13,10 @@ class DB_manager_cl(abstract_storage_Manager):
         con.commit()
         con.close() 
     
-    def __write(self, norm_candle):
+    def __write(self, candle_data):
         con = sqlite3.connect('app/data/data.db')
-        cursor = con.cursor()
-                           
-        data_to_db = []
-        for value in norm_candle.values():
-            data_to_db.append(value)
-        cursor.execute('''INSERT INTO crypto_info (ticker, timeframe, open_price, close_price, max, min, open_date, close_date) VALUES (?,?,?,?,?,?,?,?)''', data_to_db)
+        cursor = con.cursor()                       
+        cursor.execute('''INSERT INTO crypto_info (ticker, timeframe, open_price, close_price, max, min, open_date, close_date) VALUES (?,?,?,?,?,?,?,?)''', candle_data)
         con.commit()
         con.close()
     
@@ -40,7 +36,7 @@ class DB_manager_cl(abstract_storage_Manager):
         result = self.__read()
         return result
 
-    def push_data(self, norm_candle):  
-        self.__write(norm_candle)                                                                     #public method to use __pull_from_db
+    def push_data(self, candle_data):  
+        self.__write(candle_data)                                                                     #public method to use __pull_from_db
     
 

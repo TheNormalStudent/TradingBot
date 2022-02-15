@@ -1,19 +1,25 @@
 from user import User
 from data.db_manager import DB_manager_cl
+from data.csv_manager import csv_Manager
 
 class Bot:
     def __init__(self):
         self.user = User()
         self.manager = DB_manager_cl()
+        self.manager_2 = csv_Manager()
 
-    def start_some_stuff(self):
+    def push(self):
         self.user.binance_manager.save_historical_data()
     
-    def get_some_stuff(self):
+    def get(self):
+        print("DataBase")
         print(self.manager.get_data())
+        print("CSV")
+        print(self.manager_2.get_data())
     
-    def __create_some_stuff(self):
+    def __create(self):
         self.manager.create_db()
         print("created")
 
     
+ 
