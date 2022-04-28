@@ -1,26 +1,27 @@
+from http.server import ThreadingHTTPServer
 from data.db_manager import *
 from binance import Client
 from data.csv_manager import csv_Manager
 from datetime import datetime
 
-
-
 class Binance_manager:
 
-    def __init__(self, API, SECRET_KEY):
+    def __init__(self, API, SECRET_KEY, TRADINGLIST):
+        self.__tickerlist = TRADINGLIST
         self.__manager = DB_manager_cl()
         self.__csv_manager = csv_Manager()
         self.__client = Client(API, SECRET_KEY)
     
+
+    
     def save_historical_data(self):
-        #TODO impllement dict iteration
-        ticker ="BTCUSDT"
 
-        candles = self.__client.get_klines(symbol=ticker, interval=Client.KLINE_INTERVAL_1MINUTE)
-
-        candle = self.create_dict(candles[499], ticker)
-        self.__manager.push_data(candle)
-        self.__csv_manager.push_data(candle)
+        for ticker in self.__tickerlist:
+            print(ticker)
+            candles = self.__client.get_klines(symbol=ticker, interval=Client.KLINE_INTERVAL_1MINUTE)
+            candle = self.create_dict(candles[499], ticker)
+            self.__manager.push_data(candle)
+            self.__csv_manager.push_data(candle)
     
 
     def create_dict(self, last_candle, ticker):
@@ -37,4 +38,8 @@ class Binance_manager:
         for value in data.values():
             candle_data.append(value)
         return candle_data
+    
+    def check_balance(self):
+        balance = self.__client.get_asset_balance(asset='BTC')
+        print(balance)
         
