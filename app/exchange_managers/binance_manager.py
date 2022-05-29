@@ -40,6 +40,19 @@ class Binance_manager:
         return candle_data
     
     def check_balance(self):
-        balance = self.__client.get_asset_balance(asset='BTC')
+        balance = self.__client.get_asset_balance(asset='USDT')
         print(balance)
         
+    def buy(symbol, quantity, price, self):
+        #order= self.__client.order_limit_buy(symbol, quantity, price)
+        print(symbol)
+        print(quantity)
+        print(price)
+        print("bought this stuff")
+    
+    def sell(symbol, quantity, price, self):
+        #order= self.__client.order_limit_sell(symbol, quantity, price)
+        print(symbol)
+        print(quantity)
+        print(price)
+        print("sold this stuff")

@@ -9,7 +9,20 @@ class Bot:
         self.user = User()
         self.manager = DB_manager_cl()
         self.manager_2 = csv_Manager()
+    
+    def buy(self):
+        price = 65000
+        symbol = "BNBUSDT"
+        quantity = 0.01
+        self.user.binance_manager.buy(symbol, quantity, price)
 
+    def sell(self):
+        price = 65000
+        symbol = "BNBUSDT"
+        quantity = 0.01
+        self.user.binance_manager.sell(symbol, quantity, price)
+
+    
     def push(self):
         self.user.binance_manager.save_historical_data()
     
@@ -22,7 +35,7 @@ class Bot:
     def check_balance(self):
         self.user.binance_manager.check_balance()
     
-    def __create(self):
+    def create(self):
         self.manager.create_db()
         print("created")
 

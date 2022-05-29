@@ -3,7 +3,7 @@ from data.abstract_storage_manager import abstract_storage_Manager
 # Айди, тикер, таймфрейм, цена открытия, цена закрытия, максимум, минимум, дата
 
 class DB_manager_cl(abstract_storage_Manager):
-    def __create_db(self):                                                                             #private method to create table and DB        
+    def create_db(self):                                                                             #private method to create table and DB        
         con = sqlite3.connect('app/data/data.db')
         cursor = con.cursor() 
         sql_query = '''                                                                                         
