@@ -1,12 +1,12 @@
 from user import User
-from data.db_manager import DB_manager_cl
+from data.db_manager import DbManagerCl
 from data.csv_manager import csv_Manager
 
 
 class Bot:
     def __init__(self):
         self.user = User()
-        self.manager = DB_manager_cl()
+        self.manager = DbManagerCl()
         self.manager_2 = csv_Manager()
 
     def select_where(self):
