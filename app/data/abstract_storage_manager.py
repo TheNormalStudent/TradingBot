@@ -1,5 +1,5 @@
 
-class abstract_storage_Manager:
+class AbstractStorageManager:
     def __write(data):
         pass
 

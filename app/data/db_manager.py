@@ -1,9 +1,9 @@
 import sqlite3
-from data.abstract_storage_manager import abstract_storage_Manager
-# Айди, тикер, таймфрейм, цена открытия, цена закрытия, максимум, минимум, дата
+import pandas
+from data.abstract_storage_manager import AbstractStorageManager
 
 
-class DbManagerCl(abstract_storage_Manager):
+class DbManagerCl(AbstractStorageManager):
     def __init__(self) -> None:
         super().__init__()
         self.__create_db()
@@ -24,7 +24,7 @@ class DbManagerCl(abstract_storage_Manager):
         cursor.execute('''
                           SELECT *
                           FROM crypto_info
-                          WHERE open_date >= :open_date
+                          WHERE open_date <= :open_date
                           LIMIT :limit
                           ''', {'open_date': date, 'limit': limit})
 
@@ -32,6 +32,33 @@ class DbManagerCl(abstract_storage_Manager):
         con.commit()
         con.close()
         print(results)
+
+    def pandas_dataframe(self):
+        con = sqlite3.connect('app/data/data.db')
+        cursor = con.cursor()
+
+        cursor.execute('''SELECT ticker, timeframe, open_price, close_price, max, min, open_date FROM crypto_info''')
+        res = cursor.fetchall()
+        res_normal = []
+        for num in range(len(res)):
+            res_tpl = res[num]
+            res_lst = list(res_tpl)
+            res_normal.append(res_lst)
+
+        con.commit()
+        con.close()
+
+        data = {"ticker": [elem[0] for elem in res_normal],
+        "timeframe": [elem[1] for elem in res_normal],
+        "open_price": [elem[2] for elem in res_normal],
+        "close_price": [elem[3] for elem in res_normal],
+        "max": [elem[4] for elem in res_normal],
+        "min": [elem[5] for elem in res_normal],
+        "open_date": [elem[6] for elem in res_normal]}
+
+        df = pandas.DataFrame(data)
+        print(df)
+
 # private method to create table and DB
 
     def __create_db(self):

@@ -1,6 +1,6 @@
 from data.db_manager import DbManagerCl
 from binance import Client
-from data.csv_manager import csv_Manager
+from data.csv_manager import CsvManager
 from data.config import TRADING_LIST
 
 
@@ -8,7 +8,7 @@ class BinanceManager:
 
     def __init__(self, API, SECRET_KEY):
         self.__manager = DbManagerCl()
-        self.__csv_manager = csv_Manager()
+        self.__csv_manager = CsvManager()
         self.__client = Client(API, SECRET_KEY)
 
     def save_historical_data(self):
@@ -38,48 +38,26 @@ class BinanceManager:
         balance = self.__client.get_asset_balance(asset='USDT')
         print(balance)
 
-    def __buy_limit(symbol, quantity, price, self):
-        # order= self.__client.order_limit_buy(symbol, quantity, price)
-        print(symbol)
-        print(quantity)
-        print(price)
-        print("bought this stuff")
-
-    def __sell_limit(symbol, quantity, price, self):
-        # order= self.__client.order_limit_sell(symbol, quantity, price)
-        print(symbol)
-        print(quantity)
-        print(price)
-        print("sold this stuff")
-
-    def __market_buy(symbol, quantity, self):
-        # order = self.__client.order_market_buy(symbol, quantity)
-        print(symbol)
-        print(quantity)
-        print("Market bought some stuff")
-
-    def __market_sell(symbol, quantity, self):
-        # order = self.__client.order_market_sell(symbol, quantity)
-        print(symbol)
-        print(quantity)
-        print("Market sold some stuff")
-
     def buy_lim(self, symbol, quantity, price):
+        #order = self.__client.order_limit_buy(symbol, quantity, price)
         print("buy_limit")
         self.__buy_limit(symbol, quantity, price)
         print(self.__client.get_system_status())
 
     def sell_lim(self, symbol, quantity, price):
+        #order= self.__client.order_limit_sell(symbol, quantity, price)
         print("sell_limit")
         self.__sell_limit(symbol, quantity, price)
         print(self.__client.get_system_status())
 
     def buy_mark(self, symbol, quantity):
+        #order = self.__client.order_market_buy(symbol, quantity)
         print("buy market")
         self.__market_buy(symbol, quantity)
         print(self.__client.get_system_status())
 
     def sell_mark(self, symbol, quantity):
+        #order = self.__client.order_market_sell(symbol, quantity)
         print("sell market")
         self.__market_sell(symbol, quantity)
         print(self.__client.get_system_status())

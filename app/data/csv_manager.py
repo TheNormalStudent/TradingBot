@@ -1,8 +1,8 @@
 import csv
-from data.abstract_storage_manager import abstract_storage_Manager
+from data.abstract_storage_manager import AbstractStorageManager
 
 
-class csv_Manager(abstract_storage_Manager):
+class CsvManager(AbstractStorageManager):
     def __write(self, candle_data):
         with open('app/data/info.csv', 'a', newline='') as file:
             candlestickwriter = csv.writer(file, delimiter=',')

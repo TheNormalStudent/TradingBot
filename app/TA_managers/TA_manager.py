@@ -1,2 +1,2 @@
-class TA_manager:
+class TaManager:
     pass
