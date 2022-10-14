@@ -57,6 +57,8 @@ class DbManagerCl(AbstractStorageManager):
         "open_date": [elem[6] for elem in res_normal]}
 
         df = pandas.DataFrame(data)
+        # ticker_df = df["ticker"]
+        # print(ticker_df[0])
         print(df)
 
 # private method to create table and DB

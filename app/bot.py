@@ -32,6 +32,7 @@ class Bot:
     def pandas_test(self):
         self.manager.pandas_dataframe()
 
+
     # def create(self):
     #     self.manager.create_db()
     #     print("created")
