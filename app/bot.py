@@ -1,6 +1,7 @@
 from user import User
 from data.db_manager import DbManagerCl
 from data.csv_manager import CsvManager
+from TA_managers.TA_manager import TaManager
 
 
 class Bot:
@@ -26,13 +27,18 @@ class Bot:
     def check_balance(self):
         self.user.binance_manager.check_balance()
 
-    def run():
-        pass
-
-    def pandas_test(self):
-        self.manager.pandas_dataframe()
+    def run(self):
+        ta = TaManager()
+        ta.rsi_analyse('BTCUSDT', 500, 1674160500000)
 
 
-    # def create(self):
-    #     self.manager.create_db()
-    #     print("created")
+
+
+
+    # def pandas_test(self):
+    #     self.manager.to_pandas_dataframe()
+
+
+    def create(self):
+        self.manager.create_db()
+        print("created")

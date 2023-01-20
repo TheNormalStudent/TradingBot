@@ -14,4 +14,8 @@ bot = Bot()
 # quantity = 1
 # bot.user.binance_manager.sell_mark(symbol, quantity)
 
-bot.pandas_test()
+# if '__name__' == '__main__':
+
+
+bot.run()
+# bot.push_historical_data()

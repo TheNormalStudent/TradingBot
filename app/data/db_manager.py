@@ -18,50 +18,42 @@ class DbManagerCl(AbstractStorageManager):
     def push_data(self, candle_data):
         self.__write(candle_data)
 
-    def get_by_date(self, date, limit):
+    def get_by_date(self, ticker, tics, date):
         con = sqlite3.connect('app/data/data.db')
         cursor = con.cursor()
         cursor.execute('''
                           SELECT *
                           FROM crypto_info
                           WHERE open_date <= :open_date
+                          AND ticker = :ticker
                           LIMIT :limit
-                          ''', {'open_date': date, 'limit': limit})
+                          ''', {'ticker': ticker, 'open_date': date, 'limit': tics})
 
         results = cursor.fetchall()
         con.commit()
         con.close()
-        print(results)
+        return results
 
-    def pandas_dataframe(self):
-        con = sqlite3.connect('app/data/data.db')
-        cursor = con.cursor()
+    def to_pandas_dataframe(self, data): # tabelize the data
 
-        cursor.execute('''SELECT ticker, timeframe, open_price, close_price, max, min, open_date FROM crypto_info''')
-        res = cursor.fetchall()
-        res_normal = []
-        for num in range(len(res)):
-            res_tpl = res[num]
-            res_lst = list(res_tpl)
-            res_normal.append(res_lst)
+        to_df = {"ticker": [res_tuple[1] for res_tuple in data],
+        "timeframe": [res_tuple[2] for res_tuple in data],
+        "open_price": [res_tuple[3] for res_tuple in data],
+        "close_price": [res_tuple[4] for res_tuple in data],
+        "max": [res_tuple[5] for res_tuple in data],
+        "min": [res_tuple[6] for res_tuple in data],
+        "open_date": [res_tuple[7] for res_tuple in data]}
+        # print(to_df)
 
-        con.commit()
-        con.close()
+        df = pandas.DataFrame(to_df)
 
-        data = {"ticker": [elem[0] for elem in res_normal],
-        "timeframe": [elem[1] for elem in res_normal],
-        "open_price": [elem[2] for elem in res_normal],
-        "close_price": [elem[3] for elem in res_normal],
-        "max": [elem[4] for elem in res_normal],
-        "min": [elem[5] for elem in res_normal],
-        "open_date": [elem[6] for elem in res_normal]}
-
-        df = pandas.DataFrame(data)
         # ticker_df = df["ticker"]
         # print(ticker_df[0])
-        print(df)
+        # print(df)
 
-# private method to create table and DB
+        return df
+
+# private method to create table and   DB
 
     def __create_db(self):
         con = sqlite3.connect('app/data/data.db')

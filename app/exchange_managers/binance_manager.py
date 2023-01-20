@@ -25,13 +25,7 @@ class BinanceManager:
 
     def create_dict(self, candle, ticker):
         interval = "1MIN"
-        data = {"ticker": ticker, 'timeframe': interval,
-                'open_price': candle[1], 'close_price': candle[4],
-                "max": candle[2], "min": candle[3],
-                "open_date": candle[0]}  # data for DB to use
-        candle_data = []
-        for value in data.values():
-            candle_data.append(value)
+        candle_data = [ticker, interval, candle[1], candle[4], candle[2], candle[3], candle[0]] # candle_data = [ticker, interval, open price, close_price, max, min, open_date]
         return candle_data
 
     def check_balance(self):
