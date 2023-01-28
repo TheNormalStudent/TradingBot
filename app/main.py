@@ -17,5 +17,6 @@ bot = Bot()
 # if '__name__' == '__main__':
 
 
-bot.run()
+# bot.run()
 # bot.push_historical_data()
+bot.get_historical_data()

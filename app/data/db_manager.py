@@ -9,6 +9,11 @@ class DbManagerCl(AbstractStorageManager):
         self.__create_db()
 
 # public method to use __add_to_db
+
+    def __make_connection(self):
+        with sqlite3.connect('app/data/data.db') as connection:
+            return connection
+
     def get_data(self):
         result = self.__read()
         return result
@@ -19,7 +24,7 @@ class DbManagerCl(AbstractStorageManager):
         self.__write(candle_data)
 
     def get_by_date(self, ticker, tics, date):
-        con = sqlite3.connect('app/data/data.db')
+        con = self.__make_connection()
         cursor = con.cursor()
         cursor.execute('''
                           SELECT *
@@ -31,7 +36,6 @@ class DbManagerCl(AbstractStorageManager):
 
         results = cursor.fetchall()
         con.commit()
-        con.close()
         return results
 
     def to_pandas_dataframe(self, data): # tabelize the data
@@ -47,6 +51,7 @@ class DbManagerCl(AbstractStorageManager):
 
         df = pandas.DataFrame(to_df)
 
+        # tests:
         # ticker_df = df["ticker"]
         # print(ticker_df[0])
         # print(df)
@@ -56,7 +61,7 @@ class DbManagerCl(AbstractStorageManager):
 # private method to create table and   DB
 
     def __create_db(self):
-        con = sqlite3.connect('app/data/data.db')
+        con = self.__make_connection()
         cursor = con.cursor()
         sql_query = '''
             CREATE TABLE IF NOT EXISTS crypto_info
@@ -66,21 +71,21 @@ class DbManagerCl(AbstractStorageManager):
             '''
         cursor.execute(sql_query)
         con.commit()
-        con.close()
+
 
     def __write(self, candle_data):
-        con = sqlite3.connect('app/data/data.db')
+        con = self.__make_connection()
         cursor = con.cursor()              
         cursor.execute('''INSERT INTO crypto_info
                           (ticker, timeframe, open_price,
                           close_price, max, min, open_date)
                           VALUES (?,?,?,?,?,?,?)''', candle_data)
         con.commit()
-        con.close()
-# private method to get info returns *
+
+# private method to get info; returns *
 
     def __read(self):
-        con = sqlite3.connect('app/data/data.db')
+        con = self.__make_connection()
         cursor = con.cursor()
         sql_query = '''
                 SELECT * FROM [crypto_info]
@@ -88,5 +93,4 @@ class DbManagerCl(AbstractStorageManager):
         cursor.execute(sql_query)
         results = cursor.fetchall()
         con.commit()
-        con.close()
         return results

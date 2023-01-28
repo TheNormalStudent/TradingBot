@@ -9,7 +9,7 @@ class BinanceManager:
     def __init__(self, API, SECRET_KEY):
         self.__manager = DbManagerCl()
         self.__csv_manager = CsvManager()
-        self.__client = Client(API, SECRET_KEY)
+        # self.__client = Client(API, SECRET_KEY)
 
     def save_historical_data(self):
 
